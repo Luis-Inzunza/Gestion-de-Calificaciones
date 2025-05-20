@@ -20,6 +20,7 @@
       Recargar Datos
     </button>
     <a href="./pages/alumnos.php">ir a los alumnos</a>
+    <a href="./pages/login/login.php">ir a login</a>
   </div>
 
   <script>
