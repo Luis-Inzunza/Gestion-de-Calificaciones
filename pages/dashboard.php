@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../login/config.php';
+require __DIR__ . '/./login/config.php';
 
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
