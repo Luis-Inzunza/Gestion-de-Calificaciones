@@ -19,7 +19,7 @@
     <button onclick="cargarDatos()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
       Recargar Datos
     </button>
-    <a href="/pages/alumnos.php">ir a los alumnos</a>
+    <a href="./pages/alumnos.php">ir a los alumnos</a>
   </div>
 
   <script>
