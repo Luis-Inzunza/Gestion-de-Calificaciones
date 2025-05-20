@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../config.php';
+require 'config.php';
 session_destroy();
 header('Location: login.php');
 exit;

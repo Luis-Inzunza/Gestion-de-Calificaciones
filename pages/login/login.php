@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../config.php';
+require 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $pass = $_POST['password'] ?? '';
