@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($pass === PASSWORD) {
     $_SESSION['logged_in'] = true;
     $_SESSION['profile'] = PROFILE;
-    header('Location: dashboard.php');
+    header('Location: ./dashboard.php');
     exit;
   } else {
     $error = "Contraseña incorrecta. Tú no pasas.";
