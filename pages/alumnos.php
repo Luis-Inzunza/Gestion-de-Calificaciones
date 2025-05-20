@@ -29,7 +29,7 @@
   <script>
     async function cargarAlumnos() {
       try {
-        const res = await fetch('./api/get_alumnos.php');
+        const res = await fetch('../api/get_alumnos.php');
         const alumnos = await res.json();
 
         const tabla = document.getElementById('tabla-alumnos');
