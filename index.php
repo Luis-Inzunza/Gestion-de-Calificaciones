@@ -29,7 +29,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
       Recargar Datos
     </button>
     <a href="./pages/alumnos.php">ir a los alumnos</a>
+    <br>
     <a href="./pages/login/login.php">ir a login</a>
+    <br>
+    <a href="./pages/pages/calificaciones.php">ir a calificaciones</a>
   </div>
 
   <script>
