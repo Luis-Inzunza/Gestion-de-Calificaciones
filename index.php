@@ -5,6 +5,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   header('Location: ./pages/login/login.php');
   exit;
 }
+
+$nombre = $_SESSION['nombre'] ?? 'Usuario Fantasma';
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +18,14 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center justify-center p-4">
-  
+  <header class="bg-blue-700 text-white p-4 flex justify-between items-center shadow">
+    <div class="text-lg font-semibold">
+      Bienvenido, <?= htmlspecialchars($nombre) ?>
+    </div>
+    <a href="login/logout.php" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">
+      Cerrar Sesión
+    </a>
+  </header>
   <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-xl">
     <h1 class="text-2xl font-bold mb-4 text-center">Sistema Distribuido</h1>
     

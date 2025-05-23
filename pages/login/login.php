@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($pass === PASSWORD) {
     $_SESSION['logged_in'] = true;
     $_SESSION['profile'] = PROFILE;
+    $_SESSION['nombre'] = "Profesor Godínez"; // Cámbialo según quien haya entrado
     header('Location: ../../index.php');
     exit;
   } else {
