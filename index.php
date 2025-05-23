@@ -5,6 +5,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   header('Location: ./pages/login/login.php');
   exit;
 }
+
+$nombre = $_SESSION['nombre'] ?? 'Usuario Fantasma';
 ?>
 
 <!DOCTYPE html>
@@ -15,27 +17,47 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   <title>Gestion de Calificaciones</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center justify-center p-4">
-  
-  <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-xl">
-    <h1 class="text-2xl font-bold mb-4 text-center">Sistema Distribuido</h1>
-    
-    <div id="datos" class="mb-4">
-      <!-- Aquí se cargarán los datos desde la capa lógica -->
-      <p class="text-gray-600">Cargando datos...</p>
-    </div>
+<body class="">
 
-    <button onclick="cargarDatos()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-      Recargar Datos
-    </button>
-    <a href="./pages/alumnos.php">ir a los alumnos</a>
-    <br>
-    <a href="./pages/login/login.php">ir a login</a>
-    <br>
-    <a href="./pages/calificaciones.php">ir a calificaciones</a>
-    <br>
-    <a href="./pages/asignaturas.php">ir a asignaturas</a>
+  <header class="bg-blue-700 text-white p-4 flex shadow justify-between">
+    <div class="text-lg font-semibold">
+      Bienvenido, <?= htmlspecialchars($nombre) ?>
+    </div>
+    <a href="./pages/login/logout.php" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">
+      Cerrar Sesión
+    </a>
+  </header>
+
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+  <!-- Alumnos -->
+  <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center">
+    <h2 class="text-xl font-bold mb-4">Alumnos</h2>
+    <img src="./images/alumno.png" alt="alumno" class="w-32 h-32 mb-4">
+    <a href="./pages/alumnos.php" class="text-blue-600 underline">Ir a Alumnos</a>
   </div>
+
+  <!-- Calificaciones -->
+  <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center">
+    <h2 class="text-xl font-bold mb-4">Calificaciones</h2>
+    <img src="./images/calificaciones.png" alt="calificaciones" class="w-32 h-32 mb-4">
+    <a href="./pages/calificaciones.php" class="text-blue-600 underline">Ir a Calificaciones</a>
+  </div>
+
+  <!-- Asignaturas -->
+  <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center">
+    <h2 class="text-xl font-bold mb-4">Asignaturas</h2>
+    <img src="./images/asignaturas.png" alt="asignaturas" class="w-32 h-32 mb-4">
+    <a href="./pages/asignaturas.php" class="text-blue-600 underline">Ir a Asignaturas</a>
+  </div>
+
+    <!-- Reportes -->
+  <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center">
+    <h2 class="text-xl font-bold mb-4">Generar Reportes</h2>
+    <img src="./images/reporte.png" alt="asignaturas" class="w-32 h-32 mb-4">
+    <a href="./pages/reporte.php" class="text-blue-600 underline">Ir a Reportes</a>
+  </div>
+</section>
+
 
   <script>
     async function cargarDatos() {
