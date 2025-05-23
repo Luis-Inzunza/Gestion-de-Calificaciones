@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/./pages/login/config.php';
+require '/./pages/login/config.php';
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   header('Location: /pages/login/login.php');
