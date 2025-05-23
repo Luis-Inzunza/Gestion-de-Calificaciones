@@ -32,9 +32,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <br>
     <a href="./pages/login/login.php">ir a login</a>
     <br>
-    <a href="./pages/pages/calificaciones.php">ir a calificaciones</a>
+    <a href="./pages/calificaciones.php">ir a calificaciones</a>
     <br>
-    <a href="./pages/pages/asignaturas.php">ir a asignaturas</a>
+    <a href="./pages/asignaturas.php">ir a asignaturas</a>
   </div>
 
   <script>
