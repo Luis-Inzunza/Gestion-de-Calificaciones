@@ -71,7 +71,7 @@
 
   <script>
     // Variables globales
-    const API_BASE_URL = '../api/asignaturas';
+    const API_BASE_URL = 'http://localhost:8081/api/asignaturas';
     let grados = [];
 
     // Elementos DOM

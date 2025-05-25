@@ -87,7 +87,7 @@
 
   <script>
     // Variables globales
-    const API_BASE_URL = '../api/alumnos'; // Ajusta esta URL según tu backend
+    const API_BASE_URL = 'http://localhost:8081/api/alumnos'; // Ajusta esta URL según tu backend
     
     // DOM Elements
     const formulario = document.getElementById('formulario-alumno');

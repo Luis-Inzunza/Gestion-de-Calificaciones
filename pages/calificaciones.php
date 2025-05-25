@@ -82,7 +82,7 @@
 
   <script>
     // Configuración
-    const API_BASE_URL = '../api/calificaciones';
+    const API_BASE_URL = 'http://localhost:8081/api/calificaciones';
     let alumnos = [];
     let asignaturas = [];
     let grados = [];
