@@ -105,7 +105,7 @@
     // Cargar grados
     async function cargarGrados() {
       try {
-        const res = await fetch('../api/grados');
+        const res = await fetch('http://localhost:8081/api/grados');
         grados = await res.json();
       } catch (error) {
         console.error('Error cargando grados:', error);
@@ -115,26 +115,26 @@
     // Cargar combos
     async function cargarAlumnos() {
       try {
-        const res = await fetch('../api/alumnos');
+        const res = await fetch('http://localhost:8081/api/alumnos');
         alumnos = await res.json();
         const select = document.getElementById('id_alumno');
         
         alumnos.forEach(alumno => {
           const option = document.createElement('option');
-          option.value = alumno.id_alumno;
+          option.value = alumno.id;
           option.textContent = `${alumno.matricula} - ${alumno.nombre}`;
-          option.dataset.grado = alumno.id_grado; // Almacenar el grado del alumno
+          option.dataset.grado = alumno.grado.id; // Almacenar el grado del alumno
           select.appendChild(option);
         });
 
         // Evento para actualizar grado al seleccionar alumno
         select.addEventListener('change', (e) => {
           const idAlumno = e.target.value;
-          const alumno = alumnos.find(a => a.id_alumno == idAlumno);
+          const alumno = alumnos.find(a => a.id == idAlumno);
           if (alumno) {
-            const grado = grados.find(g => g.id_grado == alumno.id_grado);
+            const grado = grados.find(g => g.id == alumno.grado.id);
             document.getElementById('grado-alumno').textContent = grado ? grado.nombre_grado : 'N/A';
-            actualizarAsignaturasPorGrado(alumno.id_grado);
+            actualizarAsignaturasPorGrado(alumno.grado.id);
           }
         });
       } catch (error) {
@@ -148,18 +148,18 @@
       select.innerHTML = '<option value="">Seleccione una asignatura</option>';
       
       asignaturas
-        .filter(a => a.id_grado == idGrado)
+        .filter(a => a.grado.id == idGrado)
         .forEach(a => {
           const option = document.createElement('option');
-          option.value = a.id_asignatura;
-          option.textContent = a.nombre;
+          option.value = a.asignatura.id;
+          option.textContent = a.asignatura.nombre;
           select.appendChild(option);
         });
     }
 
     async function cargarAsignaturas() {
       try {
-        const res = await fetch('../api/asignaturas');
+        const res = await fetch('http://localhost:8081/api/asignaturas');
         asignaturas = await res.json();
       } catch (error) {
         console.error('Error cargando asignaturas:', error);
