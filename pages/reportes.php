@@ -98,7 +98,7 @@
               <select id="select-alumno" class="w-full border border-gray-300 rounded-md p-2">
                 <option value="">-- Seleccione --</option>
                 ${alumnos.map(a => `
-                  <option value="${a.id}">${a.matricula} - ${a.nombre} (${getGradoNombre(a.grado.id)})</option>
+                  <option value="${a.id}">${a.matricula} - ${a.nombre} (${getGradoNombre(a.grado.id_grado)})</option>
                 `).join('')}
               </select>
             </div>
@@ -116,7 +116,7 @@
               <select id="select-asignatura" class="w-full border border-gray-300 rounded-md p-2">
                 <option value="">-- Seleccione --</option>
                 ${asignaturas.map(a => `
-                  <option value="${a.id_asignatura}">${a.nombre} (${getGradoNombre(a.grado.id_grado)})</option>
+                  <option value="${a.id_asignatura}">${a.asignatura.nombre} (${getGradoNombre(a.grado.id_grado)})</option>
                 `).join('')}
               </select>
             </div>
@@ -172,9 +172,8 @@
         data: {
           alumno,
           calificaciones: califsAlumno.map(c => {
-            const asignatura = asignaturas.find(a => a.id == c.id) || {};
             return {
-              asignatura: asignatura.nombre || 'N/A',
+              asignatura: c.asignatura.nombre || 'N/A',
               calificacion: c.calificacion.toFixed(1),
               estatus: c.calificacion >= 60 ? 'Aprobado' : 'Reprobado'
             };
