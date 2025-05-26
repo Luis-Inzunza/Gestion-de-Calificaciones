@@ -263,44 +263,46 @@
     }
 
     // Preparar reporte de estudiantes irregulares
-    function prepararReporteIrregulares() {
-      const reporteData = [];
-      const alumnosPorGrado = agruparAlumnosPorGrado();
+   function prepararReporteIrregulares() {
+  const reporteData = [];
+  const alumnosPorGrado = agruparAlumnosPorGrado();
 
-      Object.keys(alumnosPorGrado).forEach(idGrado => {
-        const alumnosGrado = alumnosPorGrado[idGrado];
-        const irregulares = alumnosGrado.filter(alumno => {
-          const califs = calificaciones.filter(c => c.id_alumno == alumno.id_alumno);
-          return califs.some(c => c.calificacion < 6);
-        });
+  Object.keys(alumnosPorGrado).forEach(idGrado => {
+    const alumnosGrado = alumnosPorGrado[idGrado];
+    const irregulares = alumnosGrado.filter(alumno => {
+      const califs = calificaciones.filter(c => c.id_alumno === alumno.id);
+      // Verificar que tenga al menos una reprobada (menor a 6) y promedio menor a 7
+      const tieneReprobadas = califs.some(c => c.calificacion < 6);
+      const promedio = calcularPromedio(califs);
+      return tieneReprobadas && promedio < 7;
+    });
 
-        if (irregulares.length > 0) {
-          reporteData.push({
-            grado: getGradoNombre(idGrado),
-            alumnos: irregulares.map(alumno => {
-              const califs = calificaciones.filter(c => c.id_alumno == alumno.id_alumno);
-              const reprobadas = califs.filter(c => c.calificacion < 6).length;
-              const promedio = calcularPromedio(califs);
-              
-              return {
-                matricula: alumno.matricula,
-                nombre: alumno.nombre,
-                reprobadas,
-                promedio: promedio.toFixed(1)
-              };
-            })
-          });
-        }
+    if (irregulares.length > 0) {
+      reporteData.push({
+        grado: getGradoNombre(idGrado),
+        alumnos: irregulares.map(alumno => {
+          const califs = calificaciones.filter(c => c.id_alumno === alumno.id);
+          const reprobadas = califs.filter(c => c.calificacion < 6).length;
+          const promedio = calcularPromedio(califs);
+          
+          return {
+            matricula: alumno.matricula,
+            nombre: alumno.nombre,
+            reprobadas,
+            promedio: promedio.toFixed(1)
+          };
+        })
       });
-
-      currentReport = {
-        type: 'irregulares',
-        data: reporteData
-      };
-
-      // Mostrar vista previa
-      mostrarVistaPrevia();
     }
+  });
+
+  currentReport = {
+    type: 'irregulares',
+    data: reporteData
+  };
+
+  mostrarVistaPrevia();
+}
 
     // Mostrar vista previa del reporte
     function mostrarVistaPrevia() {
@@ -578,20 +580,29 @@
 
     // Funciones auxiliares
     function calcularPromedio(calificaciones) {
-      if (calificaciones.length === 0) return 0;
-      const suma = calificaciones.reduce((total, c) => total + parseFloat(c.calificacion), 0);
-      return suma / calificaciones.length;
-    }
+  if (!calificaciones || calificaciones.length === 0) return 0;
+  
+  // Asegurarse que las calificaciones están en escala 0-10
+  const califsAjustadas = calificaciones.map(c => {
+    // Si la calificación es mayor a 10, asumimos que está en escala 0-100
+    return c.calificacion > 10 ? c.calificacion / 10 : c.calificacion;
+  });
+
+  const suma = califsAjustadas.reduce((total, calif) => total + parseFloat(calif), 0);
+  const promedio = suma / califsAjustadas.length;
+  
+  // Redondear a 1 decimal
+  return Math.round(promedio * 10) / 10;
+}
 
     function agruparAlumnosPorGrado() {
-      return alumnos.reduce((grupos, alumno) => {
-        if (!grupos[alumno.id_grado]) {
-          grupos[alumno.id_grado] = [];
-        }
-        grupos[alumno.id_grado].push(alumno);
-        return grupos;
-      }, {});
-    }
+  return alumnos.reduce((grupos, alumno) => {
+    const idGrado = alumno.grado?.id_grado || alumno.id_grado;
+    if (!grupos[idGrado]) grupos[idGrado] = [];
+    grupos[idGrado].push(alumno);
+    return grupos;
+  }, {});
+}
 
     // Inicializar
     window.onload = cargarDatos;
