@@ -98,11 +98,11 @@
     function mostrarFormulario(alumno = null) {
       if (alumno) {
         formTitulo.textContent = 'Editar Alumno';
-        document.getElementById('id_alumno').value = alumno.id_alumno;
+        document.getElementById('id_alumno').value = alumno.id;
         document.getElementById('matricula').value = alumno.matricula;
         document.getElementById('nombre').value = alumno.nombre;
-        document.getElementById('id_grado').value = alumno.id_grado;
-        document.getElementById('correo_electronico').value = alumno.correo_electronico;
+        document.getElementById('id_grado').value = alumno.grado.id_grado;
+        document.getElementById('correo_electronico').value = alumno.correoElectronico;
       } else {
         formTitulo.textContent = 'Nuevo Alumno';
         alumnoForm.reset();
@@ -121,8 +121,8 @@
       const alumno = {
         matricula: document.getElementById('matricula').value,
         nombre: document.getElementById('nombre').value,
-        id_grado: document.getElementById('id_grado').value,
-        correo_electronico: document.getElementById('correo_electronico').value
+                correoElectronico: document.getElementById('correo_electronico').value,
+        id_grado: document.getElementById('id_grado').value
       };
       
       const id = document.getElementById('id_alumno').value;
@@ -173,7 +173,7 @@
           row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">${alumno.matricula}</td>
             <td class="px-6 py-4 whitespace-nowrap">${alumno.nombre}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${alumno.grado.nombre_grado}° Primaria</td>
+            <td class="px-6 py-4 whitespace-nowrap">${alumno.grado.id}° Primaria</td>
             <td class="px-6 py-4 whitespace-nowrap">${alumno.correoElectronico || '-'}</td>
             <td class="px-6 py-4 whitespace-nowrap space-x-2">
               <button onclick="editarAlumno(${alumno.id})" class="text-blue-500 hover:text-blue-700">
