@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Reportes Académicos en PDF</title>
@@ -7,22 +8,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
+
 <body class="bg-gray-100 min-h-screen p-6">
   <div class="container mx-auto">
     <h1 class="text-3xl font-bold text-center mb-6">Reportes Académicos en PDF</h1>
 
     <!-- Pestañas de reportes -->
     <div class="flex border-b mb-6">
-      <button onclick="mostrarReporte('boleta')" class="report-tab py-2 px-4 font-medium text-sm rounded-t-lg border-b-2 border-blue-500 text-blue-600">
+      <button onclick="mostrarReporte('boleta')"
+        class="report-tab py-2 px-4 font-medium text-sm rounded-t-lg border-b-2 border-blue-500 text-blue-600">
         Boleta Individual
       </button>
-      <button onclick="mostrarReporte('asignaturas')" class="report-tab py-2 px-4 font-medium text-sm text-gray-500 hover:text-blue-600">
+      <button onclick="mostrarReporte('asignaturas')"
+        class="report-tab py-2 px-4 font-medium text-sm text-gray-500 hover:text-blue-600">
         Por Asignatura
       </button>
-      <button onclick="mostrarReporte('regulares')" class="report-tab py-2 px-4 font-medium text-sm text-gray-500 hover:text-blue-600">
+      <button onclick="mostrarReporte('regulares')"
+        class="report-tab py-2 px-4 font-medium text-sm text-gray-500 hover:text-blue-600">
         Estudiantes Regulares
       </button>
-      <button onclick="mostrarReporte('irregulares')" class="report-tab py-2 px-4 font-medium text-sm text-gray-500 hover:text-blue-600">
+      <button onclick="mostrarReporte('irregulares')"
+        class="report-tab py-2 px-4 font-medium text-sm text-gray-500 hover:text-blue-600">
         Estudiantes Irregulares
       </button>
     </div>
@@ -36,7 +42,8 @@
     <div class="bg-white shadow rounded-lg p-6 hidden" id="preview-container">
       <h2 class="text-xl font-bold mb-4">Vista Previa del Reporte</h2>
       <div id="report-preview"></div>
-      <button onclick="generarPDF()" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
+      <button onclick="generarPDF()"
+        class="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
         Descargar PDF
       </button>
     </div>
@@ -61,7 +68,7 @@
           fetchData('/grados'),
           fetchData('/calificaciones')
         ]);
-        
+
         // Mostrar el primer reporte por defecto
         mostrarReporte('boleta');
       } catch (error) {
@@ -88,8 +95,8 @@
 
       const container = document.getElementById('report-controls');
       document.getElementById('preview-container').classList.add('hidden');
-      
-      switch(tipo) {
+
+      switch (tipo) {
         case 'boleta':
           container.innerHTML = `
             <h2 class="text-xl font-bold mb-4">Boleta de Calificaciones</h2>
@@ -207,7 +214,7 @@
         data: {
           asignatura,
           calificaciones: califsAsignatura.map(c => {
-            const alumno = alumnos.find( a => a.id == c.id_alumno) || {};
+            const alumno = alumnos.find(a => a.id == c.id_alumno) || {};
             return {
               alumno: alumno.nombre || 'N/A',
               calificacion: c.calificacion.toFixed(1),
@@ -242,7 +249,7 @@
             alumnos: regulares.map(alumno => {
               const califs = calificaciones.filter(c => c.id_alumno == alumno.id_alumno);
               const promedio = calcularPromedio(califs);
-              
+
               return {
                 matricula: alumno.matricula,
                 nombre: alumno.nombre,
@@ -263,53 +270,53 @@
     }
 
     // Preparar reporte de estudiantes irregulares
-   function prepararReporteIrregulares() {
-  const reporteData = [];
-  const alumnosPorGrado = agruparAlumnosPorGrado();
+    function prepararReporteIrregulares() {
+      const reporteData = [];
+      const alumnosPorGrado = agruparAlumnosPorGrado();
 
-  Object.keys(alumnosPorGrado).forEach(idGrado => {
-    const alumnosGrado = alumnosPorGrado[idGrado];
-    const irregulares = alumnosGrado.filter(alumno => {
-      const califs = calificaciones.filter(c => c.id_alumno === alumno.id);
-      // Verificar que tenga al menos una reprobada (menor a 6) y promedio menor a 7
-      const tieneReprobadas = califs.some(c => c.calificacion < 6);
-      const promedio = calcularPromedio(califs);
-      return tieneReprobadas && promedio < 7;
-    });
-
-    if (irregulares.length > 0) {
-      reporteData.push({
-        grado: getGradoNombre(idGrado),
-        alumnos: irregulares.map(alumno => {
+      Object.keys(alumnosPorGrado).forEach(idGrado => {
+        const alumnosGrado = alumnosPorGrado[idGrado];
+        const irregulares = alumnosGrado.filter(alumno => {
           const califs = calificaciones.filter(c => c.id_alumno === alumno.id);
-          const reprobadas = califs.filter(c => c.calificacion < 6).length;
+          // Verificar que tenga al menos una reprobada (menor a 6) y promedio menor a 7
+          const tieneReprobadas = califs.some(c => c.calificacion < 6);
           const promedio = calcularPromedio(califs);
-          
-          return {
-            matricula: alumno.matricula,
-            nombre: alumno.nombre,
-            reprobadas,
-            promedio: promedio.toFixed(1)
-          };
-        })
+          return tieneReprobadas && promedio < 7;
+        });
+
+        if (irregulares.length > 0) {
+          reporteData.push({
+            grado: getGradoNombre(idGrado),
+            alumnos: irregulares.map(alumno => {
+              const califs = calificaciones.filter(c => c.id_alumno === alumno.id);
+              const reprobadas = califs.filter(c => c.calificacion < 6).length;
+              const promedio = calcularPromedio(califs);
+
+              return {
+                matricula: alumno.matricula,
+                nombre: alumno.nombre,
+                reprobadas,
+                promedio: promedio.toFixed(1)
+              };
+            })
+          });
+        }
       });
+
+      currentReport = {
+        type: 'irregulares',
+        data: reporteData
+      };
+
+      mostrarVistaPrevia();
     }
-  });
-
-  currentReport = {
-    type: 'irregulares',
-    data: reporteData
-  };
-
-  mostrarVistaPrevia();
-}
 
     // Mostrar vista previa del reporte
     function mostrarVistaPrevia() {
       const preview = document.getElementById('report-preview');
       preview.innerHTML = '';
-      
-      switch(currentReport.type) {
+
+      switch (currentReport.type) {
         case 'boleta':
           preview.innerHTML = `
             <h3 class="text-lg font-semibold mb-2">Boleta de Calificaciones</h3>
@@ -432,25 +439,25 @@
     function generarPDF() {
       const doc = new jsPDF();
       const fecha = new Date().toLocaleDateString();
-      
+
       // Configuración común
       doc.setFont('helvetica');
       doc.setTextColor(40);
 
-      switch(currentReport.type) {
+      switch (currentReport.type) {
         case 'boleta':
           // Encabezado
           doc.setFontSize(16);
           doc.text('Boleta de Calificaciones', 105, 20, { align: 'center' });
           doc.setFontSize(12);
           doc.text(`Fecha: ${fecha}`, 15, 30);
-          
+
           // Datos del alumno
           doc.setFontSize(14);
           doc.text(`Alumno: ${currentReport.data.alumno.nombre}`, 15, 40);
           doc.text(`Grado: ${currentReport.data.grado}`, 15, 50);
           doc.text(`Matrícula: ${currentReport.data.alumno.matricula}`, 15, 60);
-          
+
           // Tabla de calificaciones
           doc.autoTable({
             startY: 70,
@@ -459,12 +466,12 @@
             styles: { fontSize: 10 },
             headStyles: { fillColor: [220, 220, 220] }
           });
-          
+
           // Promedio
           const finalY = doc.lastAutoTable.finalY + 10;
           doc.setFontSize(12);
           doc.text(`Promedio General: ${currentReport.data.promedio}`, 15, finalY);
-          
+
           // Pie de página
           doc.setFontSize(10);
           doc.text('Escuela Primaria - Sistema de Gestión Académica', 105, 285, { align: 'center' });
@@ -476,12 +483,12 @@
           doc.text('Reporte por Asignatura', 105, 20, { align: 'center' });
           doc.setFontSize(12);
           doc.text(`Fecha: ${fecha}`, 15, 30);
-          
+
           // Datos de la asignatura
           doc.setFontSize(14);
           doc.text(`Asignatura: ${currentReport.data.asignatura.nombre}`, 15, 40);
           doc.text(`Grado: ${currentReport.data.grado}`, 15, 50);
-          
+
           // Tabla de calificaciones
           doc.autoTable({
             startY: 60,
@@ -490,12 +497,12 @@
             styles: { fontSize: 10 },
             headStyles: { fillColor: [220, 220, 220] }
           });
-          
+
           // Promedio
           const finalY2 = doc.lastAutoTable.finalY + 10;
           doc.setFontSize(12);
           doc.text(`Promedio del Grupo: ${currentReport.data.promedio}`, 15, finalY2);
-          
+
           // Pie de página
           doc.setFontSize(10);
           doc.text('Escuela Primaria - Sistema de Gestión Académica', 105, 285, { align: 'center' });
@@ -507,18 +514,18 @@
           doc.text('Estudiantes Regulares', 105, 20, { align: 'center' });
           doc.setFontSize(12);
           doc.text(`Fecha: ${fecha}`, 15, 30);
-          
+
           let yPos = 40;
           currentReport.data.forEach((grupo, index) => {
             if (index > 0) {
               doc.addPage();
               yPos = 20;
             }
-            
+
             doc.setFontSize(14);
             doc.text(`Grado: ${grupo.grado}`, 15, yPos);
             yPos += 10;
-            
+
             doc.autoTable({
               startY: yPos,
               head: [['Matrícula', 'Nombre', 'Promedio']],
@@ -526,12 +533,12 @@
               styles: { fontSize: 10 },
               headStyles: { fillColor: [220, 220, 220] }
             });
-            
+
             yPos = doc.lastAutoTable.finalY + 10;
             doc.setFontSize(10);
             doc.text(`Total estudiantes: ${grupo.alumnos.length}`, 15, yPos);
           });
-          
+
           // Pie de página
           doc.setFontSize(10);
           doc.text('Escuela Primaria - Sistema de Gestión Académica', 105, 285, { align: 'center' });
@@ -543,18 +550,18 @@
           doc.text('Estudiantes Irregulares', 105, 20, { align: 'center' });
           doc.setFontSize(12);
           doc.text(`Fecha: ${fecha}`, 15, 30);
-          
+
           let yPos2 = 40;
           currentReport.data.forEach((grupo, index) => {
             if (index > 0) {
               doc.addPage();
               yPos2 = 20;
             }
-            
+
             doc.setFontSize(14);
             doc.text(`Grado: ${grupo.grado}`, 15, yPos2);
             yPos2 += 10;
-            
+
             doc.autoTable({
               startY: yPos2,
               head: [['Matrícula', 'Nombre', 'Materias Reprobadas', 'Promedio']],
@@ -562,12 +569,12 @@
               styles: { fontSize: 10 },
               headStyles: { fillColor: [220, 220, 220] }
             });
-            
+
             yPos2 = doc.lastAutoTable.finalY + 10;
             doc.setFontSize(10);
             doc.text(`Total estudiantes: ${grupo.alumnos.length}`, 15, yPos2);
           });
-          
+
           // Pie de página
           doc.setFontSize(10);
           doc.text('Escuela Primaria - Sistema de Gestión Académica', 105, 285, { align: 'center' });
@@ -580,32 +587,33 @@
 
     // Funciones auxiliares
     function calcularPromedio(calificaciones) {
-  if (!calificaciones || calificaciones.length === 0) return 0;
-  
-  // Asegurarse que las calificaciones están en escala 0-10
-  const califsAjustadas = calificaciones.map(c => {
-    // Si la calificación es mayor a 10, asumimos que está en escala 0-100
-    return c.calificacion > 10 ? c.calificacion / 10 : c.calificacion;
-  });
+      if (!calificaciones || calificaciones.length === 0) return 0;
 
-  const suma = califsAjustadas.reduce((total, calif) => total + parseFloat(calif), 0);
-  const promedio = suma / califsAjustadas.length;
-  
-  // Redondear a 1 decimal
-  return Math.round(promedio * 10) / 10;
-}
+      // Asegurarse que las calificaciones están en escala 0-10
+      const califsAjustadas = calificaciones.map(c => {
+        // Si la calificación es mayor a 10, asumimos que está en escala 0-100
+        return c.calificacion > 10 ? c.calificacion / 10 : c.calificacion;
+      });
+
+      const suma = califsAjustadas.reduce((total, calif) => total + parseFloat(calif), 0);
+      const promedio = suma / califsAjustadas.length;
+
+      // Redondear a 1 decimal
+      return Math.round(promedio * 10) / 10;
+    }
 
     function agruparAlumnosPorGrado() {
-  return alumnos.reduce((grupos, alumno) => {
-    const idGrado = alumno.grado?.id_grado || alumno.id_grado;
-    if (!grupos[idGrado]) grupos[idGrado] = [];
-    grupos[idGrado].push(alumno);
-    return grupos;
-  }, {});
-}
+      return alumnos.reduce((grupos, alumno) => {
+        const idGrado = alumno.grado?.id_grado || alumno.id_grado;
+        if (!grupos[idGrado]) grupos[idGrado] = [];
+        grupos[idGrado].push(alumno);
+        return grupos;
+      }, {});
+    }
 
     // Inicializar
     window.onload = cargarDatos;
   </script>
 </body>
+
 </html>
