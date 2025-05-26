@@ -173,8 +173,8 @@
           row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">${alumno.matricula}</td>
             <td class="px-6 py-4 whitespace-nowrap">${alumno.nombre}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${alumno.id_grado}° Primaria</td>
-            <td class="px-6 py-4 whitespace-nowrap">${alumno.correo_electronico || '-'}</td>
+            <td class="px-6 py-4 whitespace-nowrap">${alumno.grado.nombre_grado}° Primaria</td>
+            <td class="px-6 py-4 whitespace-nowrap">${alumno.correoElectronico || '-'}</td>
             <td class="px-6 py-4 whitespace-nowrap space-x-2">
               <button onclick="editarAlumno(${alumno.id_alumno})" class="text-blue-500 hover:text-blue-700">
                 Editar
