@@ -89,7 +89,7 @@
     // Cargar grados para el combo
     async function cargarGrados() {
       try {
-        const res = await fetch('../api/grados');
+        const res = await fetch('http://localhost:8081/api/grados');
         if (!res.ok) throw new Error('Error al cargar grados');
         
         grados = await res.json();
@@ -97,7 +97,7 @@
         
         grados.forEach(grado => {
           const option = document.createElement('option');
-          option.value = grado.id_grado;
+          option.value = grado.id;
           option.textContent = grado.nombre_grado;
           selectGrado.appendChild(option);
         });
@@ -143,7 +143,7 @@
     function mostrarFormulario(asignatura = null) {
       if (asignatura) {
         formTitulo.textContent = 'Editar Asignatura';
-        document.getElementById('id_asignatura').value = asignatura.id_asignatura;
+        document.getElementById('id_asignatura').value = asignatura.id;
         document.getElementById('nombre').value = asignatura.nombre;
         document.getElementById('id_grado').value = asignatura.id_grado;
       } else {
