@@ -176,10 +176,10 @@
             <td class="px-6 py-4 whitespace-nowrap">${alumno.grado.nombre_grado}° Primaria</td>
             <td class="px-6 py-4 whitespace-nowrap">${alumno.correoElectronico || '-'}</td>
             <td class="px-6 py-4 whitespace-nowrap space-x-2">
-              <button onclick="editarAlumno(${alumno.id_alumno})" class="text-blue-500 hover:text-blue-700">
+              <button onclick="editarAlumno(${alumno.id})" class="text-blue-500 hover:text-blue-700">
                 Editar
               </button>
-              <button onclick="eliminarAlumno(${alumno.id_alumno})" class="text-red-500 hover:text-red-700">
+              <button onclick="eliminarAlumno(${alumno.id})" class="text-red-500 hover:text-red-700">
                 Eliminar
               </button>
             </td>
@@ -220,8 +220,8 @@
           text: "No podrás revertir esta acción",
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+          confirmButtonColor: '#e84421',
+          cancelButtonColor: '#b6c6d4',
           confirmButtonText: 'Sí, eliminar',
           cancelButtonText: 'Cancelar'
         });
