@@ -45,7 +45,7 @@
   <script>
     // Variables globales
     const { jsPDF } = window.jspdf;
-    const API_BASE_URL = '../api';
+    const API_BASE_URL = 'http://localhost:8081/api';
     let alumnos = [];
     let asignaturas = [];
     let grados = [];
@@ -83,8 +83,8 @@
         tab.classList.remove('border-b-2', 'border-blue-500', 'text-blue-600');
         tab.classList.add('text-gray-500');
       });
-      event.target.classList.add('border-b-2', 'border-blue-500', 'text-blue-600');
-      event.target.classList.remove('text-gray-500');
+      //event.target.classList.add('border-b-2', 'border-blue-500', 'text-blue-600');
+      //event.target.classList.remove('text-gray-500');
 
       const container = document.getElementById('report-controls');
       document.getElementById('preview-container').classList.add('hidden');
@@ -98,7 +98,7 @@
               <select id="select-alumno" class="w-full border border-gray-300 rounded-md p-2">
                 <option value="">-- Seleccione --</option>
                 ${alumnos.map(a => `
-                  <option value="${a.id_alumno}">${a.matricula} - ${a.nombre} (${getGradoNombre(a.id_grado)})</option>
+                  <option value="${a.id}">${a.matricula} - ${a.nombre} (${getGradoNombre(a.grado.id)})</option>
                 `).join('')}
               </select>
             </div>
@@ -116,7 +116,7 @@
               <select id="select-asignatura" class="w-full border border-gray-300 rounded-md p-2">
                 <option value="">-- Seleccione --</option>
                 ${asignaturas.map(a => `
-                  <option value="${a.id_asignatura}">${a.nombre} (${getGradoNombre(a.id_grado)})</option>
+                  <option value="${a.id_asignatura}">${a.nombre} (${getGradoNombre(a.grado.id_grado)})</option>
                 `).join('')}
               </select>
             </div>
@@ -162,8 +162,8 @@
         return;
       }
 
-      const alumno = alumnos.find(a => a.id_alumno == idAlumno);
-      const califsAlumno = calificaciones.filter(c => c.id_alumno == idAlumno);
+      const alumno = alumnos.find(a => a.id == idAlumno);
+      const califsAlumno = calificaciones.filter(c => c.id == idAlumno);
       const promedio = calcularPromedio(califsAlumno);
 
       // Preparar datos para PDF
@@ -172,7 +172,7 @@
         data: {
           alumno,
           calificaciones: califsAlumno.map(c => {
-            const asignatura = asignaturas.find(a => a.id_asignatura == c.id_asignatura) || {};
+            const asignatura = asignaturas.find(a => a.id == c.id) || {};
             return {
               asignatura: asignatura.nombre || 'N/A',
               calificacion: c.calificacion.toFixed(1),
@@ -180,7 +180,7 @@
             };
           }),
           promedio: promedio.toFixed(1),
-          grado: getGradoNombre(alumno.id_grado)
+          grado: getGradoNombre(alumno.grado.id_grado)
         }
       };
 

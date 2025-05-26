@@ -54,7 +54,7 @@ $nombre = $_SESSION['nombre'] ?? 'Usuario Fantasma';
   <div class="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center">
     <h2 class="text-xl font-bold mb-4">Generar Reportes</h2>
     <img src="./images/reporte.png" alt="asignaturas" class="w-32 h-32 mb-4">
-    <a href="./pages/reporte.php" class="text-blue-600 underline">Ir a Reportes</a>
+    <a href="./pages/reportes.php" class="text-blue-600 underline">Ir a Reportes</a>
   </div>
 </section>
 
