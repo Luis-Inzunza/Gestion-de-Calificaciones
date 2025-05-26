@@ -116,7 +116,7 @@
               <select id="select-asignatura" class="w-full border border-gray-300 rounded-md p-2">
                 <option value="">-- Seleccione --</option>
                 ${asignaturas.map(a => `
-                  <option value="${a.id_asignatura}">${a.asignatura.nombre} (${getGradoNombre(a.grado.id_grado)})</option>
+                  <option value="${a.id}">${a.nombre} (${getGradoNombre(a.grado.id_grado)})</option>
                 `).join('')}
               </select>
             </div>
@@ -175,7 +175,7 @@
             return {
               asignatura: c.asignatura.nombre || 'N/A',
               calificacion: c.calificacion.toFixed(1),
-              estatus: c.calificacion >= 60 ? 'Aprobado' : 'Reprobado'
+              estatus: c.calificacion >= 6 ? 'Aprobado' : 'Reprobado'
             };
           }),
           promedio: promedio.toFixed(1),
@@ -190,12 +190,14 @@
     // Preparar reporte por asignatura
     function prepararReporteAsignatura() {
       const idAsignatura = document.getElementById('select-asignatura').value;
+      console.log(idAsignatura);
       if (!idAsignatura) {
         alert('Seleccione una asignatura');
         return;
       }
 
-      const asignatura = asignaturas.find(a => a.id_asignatura == idAsignatura);
+      const asignatura = asignaturas.find(a => a.id == idAsignatura);
+      console.log(asignatura);
       const califsAsignatura = calificaciones.filter(c => c.id_asignatura == idAsignatura);
       const promedio = calcularPromedio(califsAsignatura);
 
@@ -205,7 +207,7 @@
         data: {
           asignatura,
           calificaciones: califsAsignatura.map(c => {
-            const alumno = alumnos.find(a => a.id_alumno == c.id_alumno) || {};
+            const alumno = alumnos.find( a => a.id == c.id_alumno) || {};
             return {
               alumno: alumno.nombre || 'N/A',
               calificacion: c.calificacion.toFixed(1),
@@ -213,7 +215,7 @@
             };
           }),
           promedio: promedio.toFixed(1),
-          grado: getGradoNombre(asignatura.id_grado)
+          grado: getGradoNombre(asignatura.grado.id_grado)
         }
       };
 
@@ -229,9 +231,10 @@
       Object.keys(alumnosPorGrado).forEach(idGrado => {
         const alumnosGrado = alumnosPorGrado[idGrado];
         const regulares = alumnosGrado.filter(alumno => {
-          const califs = calificaciones.filter(c => c.id_alumno == alumno.id_alumno);
-          return califs.every(c => c.calificacion >= 60) && califs.length > 0;
+          const califs = calificaciones.filter(c => c.alumno.id == alumno.id);
+          return califs.every(c => c.calificacion >= 6) && califs.length > 0;
         });
+        console.log(regulares);
 
         if (regulares.length > 0) {
           reporteData.push({
@@ -268,7 +271,7 @@
         const alumnosGrado = alumnosPorGrado[idGrado];
         const irregulares = alumnosGrado.filter(alumno => {
           const califs = calificaciones.filter(c => c.id_alumno == alumno.id_alumno);
-          return califs.some(c => c.calificacion < 60);
+          return califs.some(c => c.calificacion < 6);
         });
 
         if (irregulares.length > 0) {
@@ -276,7 +279,7 @@
             grado: getGradoNombre(idGrado),
             alumnos: irregulares.map(alumno => {
               const califs = calificaciones.filter(c => c.id_alumno == alumno.id_alumno);
-              const reprobadas = califs.filter(c => c.calificacion < 60).length;
+              const reprobadas = califs.filter(c => c.calificacion < 6).length;
               const promedio = calcularPromedio(califs);
               
               return {
