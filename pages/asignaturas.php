@@ -117,17 +117,17 @@
         tabla.innerHTML = '';
 
         asignaturas.forEach(asignatura => {
-          const grado = grados.find(g => g.id_grado == asignatura.id_grado) || {};
+          const grado = grados.find(g => g.id == asignatura.grado.id) || {};
           
           const row = document.createElement('tr');
           row.innerHTML = `
             <td class="px-6 py-4 whitespace-nowrap">${asignatura.nombre}</td>
             <td class="px-6 py-4 whitespace-nowrap">${grado.nombre_grado || 'N/A'}</td>
             <td class="px-6 py-4 whitespace-nowrap space-x-2">
-              <button onclick="editarAsignatura(${asignatura.id_asignatura})" class="text-blue-500 hover:text-blue-700">
+              <button onclick="editarAsignatura(${asignatura.id})" class="text-blue-500 hover:text-blue-700">
                 Editar
               </button>
-              <button onclick="eliminarAsignatura(${asignatura.id_asignatura})" class="text-red-500 hover:text-red-700">
+              <button onclick="eliminarAsignatura(${asignatura.id})" class="text-red-500 hover:text-red-700">
                 Eliminar
               </button>
             </td>
@@ -145,7 +145,7 @@
         formTitulo.textContent = 'Editar Asignatura';
         document.getElementById('id_asignatura').value = asignatura.id;
         document.getElementById('nombre').value = asignatura.nombre;
-        document.getElementById('id_grado').value = asignatura.id_grado;
+        document.getElementById('id_grado').value = asignatura.grado.id;
       } else {
         formTitulo.textContent = 'Nueva Asignatura';
         asignaturaForm.reset();
@@ -193,6 +193,7 @@
         const res = await fetch(`${API_BASE_URL}/${id}`);
         const asignatura = await res.json();
         mostrarFormulario(asignatura);
+        cargarAsignaturas();
       } catch (error) {
         Swal.fire('Error', 'No se pudo cargar la asignatura', 'error');
       }
