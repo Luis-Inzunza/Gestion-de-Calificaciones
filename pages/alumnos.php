@@ -121,7 +121,7 @@
       const alumno = {
         matricula: document.getElementById('matricula').value,
         nombre: document.getElementById('nombre').value,
-                correoElectronico: document.getElementById('correo_electronico').value,
+        correoElectronico: document.getElementById('correo_electronico').value,
         id_grado: document.getElementById('id_grado').value
       };
       
